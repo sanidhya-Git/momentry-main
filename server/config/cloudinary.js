@@ -1,0 +1,22 @@
+import { v2 as cloudinary } from "cloudinary";
+
+const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
+  process.env;
+
+/** True when all Cloudinary env vars are present. */
+export const isCloudinaryConfigured = () =>
+  Boolean(CLOUDINARY_CLOUD_NAME && CLOUDINARY_API_KEY && CLOUDINARY_API_SECRET);
+
+if (isCloudinaryConfigured()) {
+  cloudinary.config({
+    cloud_name: CLOUDINARY_CLOUD_NAME,
+    api_key: CLOUDINARY_API_KEY,
+    api_secret: CLOUDINARY_API_SECRET,
+  });
+} else {
+  console.warn(
+    "⚠ Cloudinary env vars missing (CLOUDINARY_CLOUD_NAME / CLOUDINARY_API_KEY / CLOUDINARY_API_SECRET) — image uploads disabled",
+  );
+}
+
+export default cloudinary;
